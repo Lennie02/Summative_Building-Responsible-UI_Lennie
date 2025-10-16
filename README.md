@@ -50,7 +50,9 @@ Invalid: Assignment123, Test_Tag
 ### 📱 Responsive Breakpoints
 
 Mobile: 360px - 767px (cards view)
+
 Tablet: 768px - 1023px (table view, 2-col stats)
+
 Desktop: 1024px+ (4-col stats, optimized layout)
 
 ### 📁 Project Structure
@@ -100,5 +102,6 @@ GitHub: @Lennie02
 
 --- 
 Built with: Vanilla JavaScript, CSS3, HTML5 
+
 
 
