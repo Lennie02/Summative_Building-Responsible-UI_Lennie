@@ -1,13 +1,13 @@
-#Campus Life Planner
+## 📔Campus Life Planner
 
 A responsive web application for students to manage academic tasks with regex-powered search and validation.
 
-🔗 Links
+### 🔗 Links
 
 Github: @Lennie02
 Repository: https://github.com/Lennie02/Summative_Building-Responsible-UI_Lennie.git
 
-✨ Features
+### ✨ Features
 
 Add, edit, delete tasks with validation
 Regex-powered search and filtering
@@ -19,7 +19,7 @@ LocalStorage persistence
 Fully keyboard accessible
 Mobile-first responsive design
 
-🔐 Regex Patterns
+### 🔐 Regex Patterns
 
 1. Title Validation
 Pattern: /^\S(?:.*\S)?$/
@@ -39,20 +39,20 @@ Pattern: /^[A-Za-z]+(?:[ -][A-Za-z]+)*$/
 Valid: Assignment, Study Group, Study-Group
 Invalid: Assignment123, Test_Tag
 
-⌨️ Keyboard Navigation
+### ⌨️ Keyboard Navigation
 
 Tab / Shift+Tab - Navigate elements
 Enter - Activate buttons/links
 Escape - Close modals
 All interactive elements have visible focus indicators
 
-📱 Responsive Breakpoints
+### 📱 Responsive Breakpoints
 
 Mobile: 360px - 767px (cards view)
 Tablet: 768px - 1023px (table view, 2-col stats)
 Desktop: 1024px+ (4-col stats, optimized layout)
 
-📁 Project Structure
+### 📁 Project Structure
 ~~~
 campus-life-planner/
 ├── index.html          # Main app
@@ -69,14 +69,14 @@ campus-life-planner/
     ├── search.js
     └── ui.js
 ~~~
-💾 Load Sample Data
+### 💾 Load Sample Data
 
 Go to Settings → Data Management
 Click Import JSON
 Select seed.json
 12 sample tasks will load
 
-📊 Data Model
+### 📊 Data Model
 ~~~
 json
 {
@@ -89,15 +89,16 @@ json
   "updatedAt": "2025-10-10T08:00:00.000Z"
 }
 ~~~
-👨‍💻 Developer
+### 👨‍💻 Developer
 
 Name: Orla Lennie ISHIMWE
 Email: o.ishimwe1@alustudent.com
 GitHub: @Lennie02
 
-📹 Demo Video:
+### 📹 Demo Video:
 
 Built with: Vanilla JavaScript, CSS3, HTML5 
+
 
 
 
