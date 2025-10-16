@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campus Life Planner - Tests</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        h1 {
+            color: #667eea;
+        }
+        .test-section {
+            background: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .test-case {
+            margin: 15px 0;
+            padding: 12px;
+            border-left: 4px solid #ddd;
+            background: #f9f9f9;
+        }
+        .test-case.pass {
+            border-left-color: #28a745;
+            background: #d4edda;
+        }
+        .test-case.fail {
+            border-left-color: #dc3545;
+            background: #f8d7da;
+        }
+        .test-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .test-input {
+            color: #666;
+            font-family: monospace;
+            margin: 5px 0;
+        }
+        .test-result {
+            margin-top: 5px;
+            font-size: 0.9em;
+        }
+        button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            margin-bottom: 20px;
+        }
+        button:hover {
+            background: #764ba2;
+        }
+        .summary {
+            background: #e7f3ff;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid #667eea;
+        }
+    </style>
+</head>
+<body>
+    <h1>Validation Tests - Campus Life Planner</h1>
+    
+    <button onclick="runAllTests()">Run All Tests</button>
+    
+    <div id="summary" class="summary" style="display:none;">
+        <h3>Test Summary</h3>
+        <p>Total: <span id="total-tests">0</span></p>
+        <p>Passed: <span id="passed-tests">0</span></p>
+        <p>Failed: <span id="failed-tests">0</span></p>
+    </div>
+    
+    <div id="test-results"></div>
+
+    <script type="module">
+        import { validateTitle, validateDate, validateDuration, validateTag } from './scripts/validators.js';
+        import { compileRegex } from './scripts/search.js';
+
+        window.runAllTests = function() {
+            const results = document.getElementById('test-results');
+            results.innerHTML = '';
+            
+            let totalTests = 0;
+            let passedTests = 0;
+
+            // Title validation tests
+            const titleSection = document.createElement('div');
+            titleSection.className = 'test-section';
+            titleSection.innerHTML = '<h2>Title Validation Tests</h2>';
+            
+            const titleTests = [
+                { input: 'Complete Assignment', expected: true, desc: 'Valid title' },
+                { input: ' Leading space', expected: false, desc: 'Leading space (should fail)' },
+                { input: 'Trailing space ', expected: false, desc: 'Trailing space (should fail)' },
+                { input: '  ', expected: false, desc: 'Only whitespace (should fail)' },
+                { input: '', expected: false, desc: 'Empty string (should fail)' },
+                { input: 'Study for for exam', expected: false, desc: 'Duplicate words (should fail)' },
+                { input: 'Read Chapter Ten', expected: true, desc: 'Valid multi-word title' }
+            ];
+            
+            titleTests.forEach(test => {
+                totalTests++;
+                const result = validateTitle(test.input);
+                const passed = result.valid === test.expected;
+                if (passed) passedTests++;
+                
+                titleSection.innerHTML += `
+                    <div class="test-case ${passed ? 'pass' : 'fail'}">
+                        <div class="test-title">${passed ? '✓' : '✗'} ${test.desc}</div>
+                        <div class="test-input">Input: "${test.input}"</div>
+                        <div class="test-result">Expected: ${test.expected}, Got: ${result.valid}${result.message ? ` - ${result.message}` : ''}</div>
+                    </div>
+                `;
+            });
+            
+            results.appendChild(titleSection);
+
+            // Date validation tests
+            const dateSection = document.createElement('div');
+            dateSection.className = 'test-section';
+            dateSection.innerHTML = '<h2>Date Validation Tests</h2>';
+            
+            const dateTests = [
+                { input: '2025-10-20', expected: true, desc: 'Valid date' },
+                { input: '2025-13-01', expected: false, desc: 'Invalid month (should fail)' },
+                { input: '2025-00-15', expected: false, desc: 'Month zero (should fail)' },
+                { input: '2025-12-32', expected: false, desc: 'Invalid day (should fail)' },
+                { input: '25-10-20', expected: false, desc: 'Wrong format (should fail)' },
+                { input: '2025/10/20', expected: false, desc: 'Wrong separator (should fail)' },
+                { input: '', expected: false, desc: 'Empty string (should fail)' }
+            ];
+            
+            dateTests.forEach(test => {
+                totalTests++;
+                const result = validateDate(test.input);
+                const passed = result.valid === test.expected;
+                if (passed) passedTests++;
+                
+                dateSection.innerHTML += `
+                    <div class="test-case ${passed ? 'pass' : 'fail'}">
+                        <div class="test-title">${passed ? '✓' : '✗'} ${test.desc}</div>
+                        <div class="test-input">Input: "${test.input}"</div>
+                        <div class="test-result">Expected: ${test.expected}, Got: ${result.valid}${result.message ? ` - ${result.message}` : ''}</div>
+                    </div>
+                `;
+            });
+            
+            results.appendChild(dateSection);
+
+            // Duration validation tests
+            const durationSection = document.createElement('div');
+            durationSection.className = 'test-section';
+            durationSection.innerHTML = '<h2>Duration Validation Tests</h2>';
+            
+            const durationTests = [
+                { input: '60', expected: true, desc: 'Valid integer' },
+                { input: '90.5', expected: true, desc: 'Valid decimal' },
+                { input: '0', expected: false, desc: 'Zero (should fail)' },
+                { input: '-10', expected: false, desc: 'Negative number (should fail)' },
+                { input: '45.678', expected: false, desc: 'More than 2 decimals (should fail)' },
+                { input: 'abc', expected: false, desc: 'Non-numeric (should fail)' },
+                { input: '', expected: false, desc: 'Empty string (should fail)' }
+            ];
+            
+            durationTests.forEach(test => {
+                totalTests++;
+                const result = validateDuration(test.input);
+                const passed = result.valid === test.expected;
+                if (passed) passedTests++;
+                
+                durationSection.innerHTML += `
+                    <div class="test-case ${passed ? 'pass' : 'fail'}">
+                        <div class="test-title">${passed ? '✓' : '✗'} ${test.desc}</div>
+                        <div class="test-input">Input: "${test.input}"</div>
+                        <div class="test-result">Expected: ${test.expected}, Got: ${result.valid}${result.message ? ` - ${result.message}` : ''}</div>
+                    </div>
+                `;
+            });
+            
+            results.appendChild(durationSection);
+
+            // Tag validation tests
+            const tagSection = document.createElement('div');
+            tagSection.className = 'test-section';
+            tagSection.innerHTML = '<h2>Tag Validation Tests</h2>';
+            
+            const tagTests = [
+                { input: 'Assignment', expected: true, desc: 'Valid single word' },
+                { input: 'Study Group', expected: true, desc: 'Valid with space' },
+                { input: 'Study-Group', expected: true, desc: 'Valid with hyphen' },
+                { input: 'Group Meeting Notes', expected: true, desc: 'Valid multi-word' },
+                { input: '123', expected: false, desc: 'Numbers only (should fail)' },
+                { input: 'Assignment123', expected: false, desc: 'Letters and numbers (should fail)' },
+                { input: 'Test_Tag', expected: false, desc: 'Underscore (should fail)' },
+                { input: '', expected: false, desc: 'Empty string (should fail)' }
+            ];
+            
+            tagTests.forEach(test => {
+                totalTests++;
+                const result = validateTag(test.input);
+                const passed = result.valid === test.expected;
+                if (passed) passedTests++;
+                
+                tagSection.innerHTML += `
+                    <div class="test-case ${passed ? 'pass' : 'fail'}">
+                        <div class="test-title">${passed ? '✓' : '✗'} ${test.desc}</div>
+                        <div class="test-input">Input: "${test.input}"</div>
+                        <div class="test-result">Expected: ${test.expected}, Got: ${result.valid}${result.message ? ` - ${result.message}` : ''}</div>
+                    </div>
+                `;
+            });
+            
+            results.appendChild(tagSection);
+
+            // Regex compilation tests
+            const regexSection = document.createElement('div');
+            regexSection.className = 'test-section';
+            regexSection.innerHTML = '<h2>Regex Search Tests</h2>';
+            
+            const regexTests = [
+                { input: 'assignment', expected: true, desc: 'Valid simple pattern' },
+                { input: 'assignment|homework', expected: true, desc: 'Valid alternation' },
+                { input: '\\d{2}:\\d{2}', expected: true, desc: 'Valid time pattern' },
+                { input: '@tag:\\w+', expected: true, desc: 'Valid tag search pattern' },
+                { input: '[', expected: false, desc: 'Invalid unclosed bracket (should return null)' },
+                { input: '(group', expected: false, desc: 'Invalid unclosed parenthesis (should return null)' },
+                { input: '', expected: false, desc: 'Empty pattern (should return null)' }
+            ];
+            
+            regexTests.forEach(test => {
+                totalTests++;
+                const result = compileRegex(test.input);
+                const passed = (result !== null) === test.expected;
+                if (passed) passedTests++;
+                
+                regexSection.innerHTML += `
+                    <div class="test-case ${passed ? 'pass' : 'fail'}">
+                        <div class="test-title">${passed ? '✓' : '✗'} ${test.desc}</div>
+                        <div class="test-input">Input: "${test.input}"</div>
+                        <div class="test-result">Expected: ${test.expected ? 'valid regex' : 'null'}, Got: ${result !== null ? 'valid regex' : 'null'}</div>
+                    </div>
+                `;
+            });
+            
+            results.appendChild(regexSection);
+
+            // Show summary
+            document.getElementById('total-tests').textContent = totalTests;
+            document.getElementById('passed-tests').textContent = passedTests;
+            document.getElementById('failed-tests').textContent = totalTests - passedTests;
+            document.getElementById('summary').style.display = 'block';
+            
+            // Scroll to top
+            window.scrollTo(0, 0);
+        };
+    </script>
+</body>
+</html>
