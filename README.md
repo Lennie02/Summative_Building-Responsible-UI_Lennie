@@ -5,6 +5,7 @@ A responsive web application for students to manage academic tasks with regex-po
 ### 🔗 Links
 
 Github: @Lennie02
+
 Repository: https://github.com/Lennie02/Summative_Building-Responsible-UI_Lennie.git
 
 ### ✨ Features
@@ -27,16 +28,19 @@ Pattern: /^\S(?:.*\S)?$/
 Advanced: /\b(\w+)\s+\1\b/i (detects duplicate words - back-reference)
 Valid: Complete Assignment, Read Chapter Ten
 Invalid:  Leading space, Study for for exam
+
 2. Date Validation
 
 Pattern: /^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/
 Valid: 2025-10-20, 2025-01-15
 Invalid: 2025-13-01, 25-10-20
+
 3. Duration Validation
 
 Pattern: /^(0|[1-9]\d*)(\.\d{1,2})?$/
 Valid: 60, 90.5, 135.75
 Invalid: 0, -10, 45.678
+
 4. Tag Validation
 
 Pattern: /^[A-Za-z]+(?:[ -][A-Za-z]+)*$/
@@ -96,4 +100,5 @@ GitHub: @Lennie02
 
 --- 
 Built with: Vanilla JavaScript, CSS3, HTML5 
+
 
