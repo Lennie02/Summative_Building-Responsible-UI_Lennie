@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campus Life Planner</title>
+    <Link rel = "stylesheet" href="styles/main.css">
+</head>
+<body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    <header>
+        <div class="container">
+            <h1>Campus Life Planner</h1>
+            <p class="tagline">Stay organized</p>
+        </div>
+    </header>
+    <nav aria-label="Main navigation">
+        <div class="container">
+            <ul class="nav-list">
+                <li><a href="#about" class="nav-link" data-section="about">About</a></li>
+                <li><a href="#dashboard" class="nav-link active" data-section="dashboard">Dashboard</a></li>
+                <li><a href="#tasks" class="nav-link" data-section="tasks">My Tasks</a></li>
+                <li><a href="#add-task" class="nav-link" data-section="add-task">Add Task</a></li>
+                <li><a href="#settings" class="nav-link" data-section="settings">Settings</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main id="main-content">
+        <div class="container">
+            <!-- About Section -->
+            <section id="about" class="content-section" hidden>
+                <h2>About Campus Life Planner</h2>
+                <div class="about-content"></div>
+                <p>Campus Life Planner is your go-to app for managing tasks, events, and deadlines. Stay organized and never miss an important date!</p>
+
+                <h3>Features</h3>
+                <ul>
+                    <li>Add and manage tasks with durations and due dates</li>
+                    <li>Search tasks using regex patterns</li>
+                    <li>Sort and filter by date, title, or duration</li>
+                    <li>Set time and track your progress</li>
+                    <li>Fully keyboard accessible</li>
+                </ul>
+                 <h3>Contact</h3>
+                 <p>
+                    <strong>Developer:</strong> Orla Lennie Ishimwe<br>
+                    <strong>Email:</strong> o.ishimwe1@alustudent.com<br>
+                    <strong>GitHub:</strong> <a href="https://github.com/Lennie02" target="_blank" >github.com/Lennie02</a>
+                 </p>
+            </section>
+        </div>
+<!-- Dashboard Section -->
+        <section id="dashboard" class="content-section">
+            <h2>Dashboard</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>Total Tasks</h3>
+                    <p class="stat-number" id="total-tasks">0</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Total Duration</h3>
+                    <p class="stat-number" id="total-duration">0 min</p>
+            </div>
+            <div class="stat-card">
+                <h3>Top Tag</h3>
+                <p class="stat-number" id="top-tag">N/A</p>
+            </div>
+            <div class="stat-card">
+                <h3>This week</h3>
+                <p class="week-chart" id="mini-chart"></p>
+            </div>
+            </div>
+            <div class="cap-section">
+                <h3>Weekly Time Budget</h3>
+                <div class="cap-diplay">
+                    <p>Budget: <span id="cap-value">300</span> minutes</p>
+                    <p>Used: <span id="used-cap">0</span> minutes</p>
+                    <p>Remaining: <span id="remaining-cap">300</span> minutes</p>
+                </div>
+                <div role="status" aria-live="polite" aria-atomic="true" id="cap-status" class="cap-status"></div>
+            </div>
+        </section>
+<!-- Tasks Section -->
+        <section id="tasks" class="content-section" hidden>
+            <h2>My Tasks</h2>
+
+            <div class="search-sort-controls">
+                <div class="search-box">
+                    <label for="search-input">Search Tasks:</label>
+                    <input type="text" id="search-input" placeholder="Enter assignment">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="case-sensitive-checkbox">
+                        Case Sensitive
+                    </label>
+
+                </div>
+
+                <div class="sort-controls">
+                    <label for="sort-by">Sort By:</label>
+                    <select id="sort-by">
+                        <option value="date"> Due Date </option>
+                        <option value="title">Title (A-Z)</option>
+                        <option value="duration">Duration</option>
+                    </select>
+                    <button id="sort-order" class="btn-icon" aria-label="Toggle sort order">↓</button>
+            </div>
+            </div>
+            <div role="status" aria-live="polite" id="search-status"></div>
+
+                <div class="table-wrapper">
+                    <table id="tasks-table" class="tasks-table">
+                        <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>Due Date</th>
+                                <th>Duration</th>
+                                <th>Tag</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tasks-tbody">
+                            <!-- Task rows will be rendered here -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <div id="tasks-mobile" class="tasks-cards">
+                    <!-- Mobile cards will be rendered here -->
+                </div>
+
+                <p id="no-tasks-message" class="empty-message" hidden>No tasks yet. Add your first task to get started!</p>
+            </section>
+
+            <!-- Add/Edit Task Section -->
+            <section id="add-task" class="content-section" hidden>
+                <h2 id="form-title">Add New Task</h2>
+                
+                <form id="task-form" class="task-form" novalidate>
+                    <input type="hidden" id="task-id">
+
+                    <div class="form-group">
+                        <label for="task-title">Title: <span aria-label="required">*</span></label>
+                        <input type="text" id="task-title" required aria-describedby="title-error">
+                        <div id="title-error" class="error-message" role="alert"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="task-due-date">Due Date: <span aria-label="required">*</span></label>
+                        <input type="text" id="task-due-date" placeholder="MM-DD-YYY" required aria-describedby="date-error">
+                        <div id="date-error" class="error-message" role="alert"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="task-duration">Duration (minutes): <span aria-label="required">*</span></label>
+                        <input type="text" id="task-duration" placeholder="e.g., 60" required aria-describedby="duration-error">
+                        <div id="duration-error" class="error-message" role="alert"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="task-tag">Tag: <span aria-label="required">*</span></label>
+                        <input type="text" id="task-tag" placeholder="e.g., Assignment" required aria-describedby="tag-error">
+                        <div id="tag-error" class="error-message" role="alert"></div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">Save Task</button>
+                        <button type="button" id="cancel-edit" class="btn btn-secondary" hidden>Cancel</button>
+                    </div>
+
+                    <div role="status" aria-live="assertive" id="form-status"></div>
+                </form>
+            </section>
+
+            <!-- Settings Section -->
+            <section id="settings" class="content-section" hidden>
+                <h2>Settings</h2>
+
+                <div class="settings-group">
+                    <h3>Time Units</h3>
+                    <p>Current unit: <strong>Minutes</strong></p>
+                    <div class="conversion-tool">
+                        <label for="convert-input">Convert:</label>
+                        <input type="number" id="convert-input" value="60" min="0">
+                        <select id="convert-from">
+                            <option value="minutes">Minutes</option>
+                            <option value="hours">Hours</option>
+                        </select>
+                        <span>=</span>
+                        <span id="convert-output" class="convert-result">1 hour(s)</span>
+                    </div>
+                </div>
+
+                <div class="settings-group">
+                    <h3>Weekly Time Budget</h3>
+                    <label for="cap-input">Set budget (minutes):</label>
+                    <input type="number" id="cap-input" value="300" min="1">
+                    <button id="save-cap" class="btn btn-primary">Save Budget</button>
+                    <div role="status" aria-live="polite" id="cap-save-status"></div>
+                </div>
+
+                <div class="settings-group">
+                    <h3>Data Management</h3>
+                    <div class="data-actions">
+                        <button id="export-data" class="btn btn-secondary">Export JSON</button>
+                        <div class="import-group">
+                            <label for="import-file" class="btn btn-secondary">Import JSON</label>
+                            <input type="file" id="import-file" accept=".json" hidden>
+                        </div>
+                        <button id="clear-data" class="btn btn-danger">Clear All Data</button>
+                    </div>
+                    <div role="status" aria-live="assertive" id="data-status"></div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Campus Life Planner. Built for students, by students.</p>
+        </div>
+    </footer>
+
+    <!-- Delete Confirmation Dialog -->
+    <div id="delete-dialog" class="dialog" role="dialog" aria-modal="true" aria-labelledby="dialog-title" hidden>
+        <div class="dialog-content">
+            <h2 id="dialog-title">Confirm Deletion</h2>
+            <p>Are you sure you want to delete this task?</p>
+            <div class="dialog-actions">
+                <button id="confirm-delete" class="btn btn-danger">Delete</button>
+                <button id="cancel-delete" class="btn btn-secondary">Cancel</button>
+            </div>
+        </div>
+        
+    </div>
+
+    <script type="module" src="scripts/main.js"></script>
+        </section>
+    </main>
+</body>
+</html>
