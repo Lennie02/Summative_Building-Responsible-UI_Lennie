@@ -53,7 +53,7 @@ Tablet: 768px - 1023px (table view, 2-col stats)
 Desktop: 1024px+ (4-col stats, optimized layout)
 
 📁 Project Structure
-
+~~~
 campus-life-planner/
 ├── index.html          # Main app
 ├── tests.html          # Validation tests
@@ -68,7 +68,7 @@ campus-life-planner/
     ├── validators.js
     ├── search.js
     └── ui.js
-
+~~~
 💾 Load Sample Data
 
 Go to Settings → Data Management
@@ -77,7 +77,7 @@ Select seed.json
 12 sample tasks will load
 
 📊 Data Model
-
+~~~
 json
 {
   "id": "task_1697000001",
@@ -88,7 +88,7 @@ json
   "createdAt": "2025-10-10T08:00:00.000Z",
   "updatedAt": "2025-10-10T08:00:00.000Z"
 }
-
+~~~
 👨‍💻 Developer
 
 Name: Orla Lennie ISHIMWE
@@ -98,5 +98,6 @@ GitHub: @Lennie02
 📹 Demo Video:
 
 Built with: Vanilla JavaScript, CSS3, HTML5 
+
 
 
