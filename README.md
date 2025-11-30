@@ -2,7 +2,7 @@
 
 A comprehensive, accessible task management application for students to organize assignments, track deadlines, and manage their academic workload.
 
-**Live Demo:** [https://lennie02.github.io/campus-life-planner](https://lennie02.github.io/campus-life-planner)
+**Live Demo:** [https://github.com/Lennie02/Summative_Building-Responsible-UI_Lennie.git](https://github.com/Lennie02/Summative_Building-Responsible-UI_Lennie.git)
 
 ---
 
@@ -37,8 +37,8 @@ Campus Life Planner is a vanilla JavaScript web application built for the ALU Su
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/Lennie02/campus-life-planner.git
-   cd campus-life-planner
+   git clone https://github.com/Lennie02/Summative_Building-Responsible-UI_Lennie.git
+   cd Summative_Building-Responsible-UI_Lennie
    ```
 
 2. Install VS Code "Live Server" extension
@@ -216,21 +216,21 @@ Open `tests.html` → Click "Run All Tests"
 
 ```
 campus-life-planner/
-├── index.html              # Main app page
-├── tests.html              # Test suite
-├── sample_tasks.json       # Sample data (12 tasks)
+├── index.html              
+├── tests.html              
+├── sample_tasks.json       
 ├── styles/
-│   ├── main.css           # Light mode styles
-│   └── darkmode.css       # Dark mode with CSS variables
+│   ├── main.css           
+│   └── darkmode.css       
 └── scripts/
-    ├── main.js            # App initialization
-    ├── ui.js              # DOM manipulation
-    ├── state.js           # State management
-    ├── storage.js         # localStorage operations
-    ├── validators.js      # Regex validation
-    ├── search.js          # Search/filter/sort
-    ├── theme.js           # Theme toggle
-    └── dialog.js          # Delete confirmation
+    ├── main.js            
+    ├── ui.js              
+    ├── state.js           
+    ├── storage.js         
+    ├── validators.js      
+    ├── search.js        
+    ├── theme.js           
+    └── dialog.js          
 ```
 
 ---
@@ -248,8 +248,7 @@ campus-life-planner/
 
 - Chrome/Edge (latest)
 - Firefox (latest)
-- Safari (latest)
-- Requires JavaScript enabled
+
 
 ---
 
@@ -273,4 +272,3 @@ This project was created as part of the ALU Summative Assignment - Building Resp
 
 ---
 
-**Note:** This application uses ES6 modules and must be run through a web server (not `file://`). See [Quick Start](#-quick-start) for setup instructions.
