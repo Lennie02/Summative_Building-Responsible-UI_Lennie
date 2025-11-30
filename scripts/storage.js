@@ -47,7 +47,7 @@ export function saveSettings(settings) {
     }
 }
 
-// Clear all data
+// Clearing all data
 export function clearAllData() {
     try {
         localStorage.removeItem(STORAGE_KEY);

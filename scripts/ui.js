@@ -3,8 +3,23 @@
 import { state } from './state.js';
 import { highlightMatches } from './search.js';
 
-// Navigation
 export function switchSection(sectionId) {
+// Setup navigation
+function setupNavigation() {
+    document.querySelectorAll('.nav-link').forEach(link => {
+        link.addEventListener('click', (e) => {
+            const href = link.getAttribute('href');
+            if (href === 'tests.html' || !link.dataset.section) {
+                return; 
+            }
+            e.preventDefault();
+            const section = link.dataset.section;
+            if (section) {
+                switchSection(section);
+            }
+        });
+    });
+}
     // Hide all sections
     document.querySelectorAll('.content-section').forEach(section => {
         section.hidden = true;
@@ -120,19 +135,26 @@ function handleEditClick(e) {
 function handleDeleteClick(e) {
     const taskId = e.target.dataset.id;
     state.deleteTaskId = taskId;
-    showDeleteModal();
+    showDeleteDialog();
 }
 
-// Delete modal
-export function showDeleteModal() {
-    const modal = document.getElementById('delete-modal');
-    modal.hidden = false;
-    document.getElementById('confirm-delete').focus();
+// Delete dialog
+export function showDeleteDialog() {
+    const dialog = document.getElementById('delete-dialog');
+    if (dialog) {
+        dialog.hidden = false;
+        dialog.classList.add('active');
+        const confirmBtn = document.getElementById('confirm-delete');
+        if (confirmBtn) confirmBtn.focus();
+    }
 }
 
-export function hideDeleteModal() {
-    const modal = document.getElementById('delete-modal');
-    modal.hidden = true;
+export function hideDeleteDialog() {
+    const dialog = document.getElementById('delete-dialog');
+    if (dialog) {
+        dialog.hidden = true;
+        dialog.classList.remove('active');
+    }
     state.deleteTaskId = null;
 }
 
@@ -172,6 +194,8 @@ export function updateDashboard() {
 
 function renderWeekChart(tasks) {
     const chartDiv = document.getElementById('week-chart');
+    if (!chartDiv) return;
+
     chartDiv.innerHTML = '';
     
     const today = new Date();
@@ -206,10 +230,12 @@ function updateCapStatus(totalDuration) {
     const remaining = budget - totalDuration;
     
     document.getElementById('cap-value').textContent = budget;
-    document.getElementById('used-value').textContent = totalDuration;
-    document.getElementById('remaining-value').textContent = Math.max(0, remaining);
+    document.getElementById('used-cap').textContent = totalDuration;
+    document.getElementById('remaining-cap').textContent = Math.max(0, remaining);
     
     const statusDiv = document.getElementById('cap-status');
+    if (!statusDiv) return;
+
     statusDiv.className = 'cap-status';
     
     if (remaining >= 0) {
@@ -259,7 +285,7 @@ export function showValidationErrors(errors) {
         input.classList.remove('invalid');
     });
     
-    // Show new errors
+    // Show errors
     if (errors.title) {
         document.getElementById('title-error').textContent = errors.title;
         document.getElementById('task-title').classList.add('invalid');

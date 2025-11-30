@@ -10,10 +10,16 @@ import {
     showStatus, 
     clearForm,
     showValidationErrors,
-    showDeleteModal,
-    hideDeleteModal
+    hideDeleteDialog
 } from './ui.js';
 import { clearAllData } from './storage.js';
+
+
+// Global error handling
+window.addEventListener('error', (e) => {
+    console.error('Global error:', e.error);
+    showStatus('form-status', 'An unexpected error occurred. Please try again.', 'error');
+});
 
 // Initialize app
 function init() {
@@ -23,7 +29,8 @@ function init() {
     setupSort();
     setupSettings();
     setupDataManagement();
-    setupDeleteModal();
+    setupDeleteDialog();
+    setupKeyboardShortcuts();
     
     // Initial render
     updateView();
@@ -34,9 +41,17 @@ function init() {
 function setupNavigation() {
     document.querySelectorAll('.nav-link').forEach(link => {
         link.addEventListener('click', (e) => {
+        
+            const href = link.getAttribute('href');
+            if (href === 'tests.html' || !link.dataset.section) {
+                return; 
+            }
+            
             e.preventDefault();
             const section = link.dataset.section;
-            switchSection(section);
+            if (section) {
+                switchSection(section);
+            }
         });
     });
 }
@@ -92,7 +107,7 @@ function handleFormSubmit() {
 // Setup search functionality
 function setupSearch() {
     const searchInput = document.getElementById('search-input');
-    const caseSensitive = document.getElementById('case-sensitive');
+    const caseSensitive = document.getElementById('case-sensitive-checkbox');
     
     searchInput.addEventListener('input', handleSearch);
     caseSensitive.addEventListener('change', handleSearch);
@@ -100,7 +115,7 @@ function setupSearch() {
 
 function handleSearch() {
     const searchInput = document.getElementById('search-input');
-    const caseSensitive = document.getElementById('case-sensitive');
+    const caseSensitive = document.getElementById('case-sensitive-checkbox');
     const statusDiv = document.getElementById('search-status');
     
     const pattern = searchInput.value.trim();
@@ -108,6 +123,9 @@ function handleSearch() {
     if (!pattern) {
         state.searchRegex = null;
         statusDiv.textContent = '';
+        statusDiv.style.background = '';
+        statusDiv.style.color = '';
+        statusDiv.style.padding = '';
         updateView();
         return;
     }
@@ -214,18 +232,23 @@ function setupDataManagement() {
 }
 
 function handleExport() {
-    const tasks = state.exportTasks();
-    const dataStr = JSON.stringify(tasks, null, 2);
-    const blob = new Blob([dataStr], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = `campus_planner_backup_${Date.now()}.json`;
-    link.click();
-    
-    URL.revokeObjectURL(url);
-    showStatus('data-status', 'Data exported successfully!', 'success');
+    try {
+        const tasks = state.exportTasks();
+        const dataStr = JSON.stringify(tasks, null, 2);
+        const blob = new Blob([dataStr], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `campus_planner_backup_${Date.now()}.json`;
+        link.click();
+        
+        URL.revokeObjectURL(url);
+        showStatus('data-status', 'Data exported successfully!', 'success');
+    } catch (error) {
+        console.error('Export failed:', error);
+        showStatus('data-status', 'Export failed. Please try again.', 'error');
+    }
 }
 
 function handleImport(file) {
@@ -249,6 +272,7 @@ function handleImport(file) {
             showStatus('data-status', `Successfully imported ${data.length} task(s)!`, 'success');
             
         } catch (error) {
+            console.error('Import failed:', error);
             showStatus('data-status', 'Import failed: Invalid JSON file', 'error');
         }
     };
@@ -263,17 +287,22 @@ function handleImport(file) {
 function handleClearData() {
     const confirmed = confirm('Are you sure you want to delete ALL tasks? This cannot be undone!');
     if (!confirmed) return;
-    
-    clearAllData();
-    state.clearAllTasks();
-    state.settings = { weeklyBudget: 300 };
-    updateView();
-    updateDashboard();
-    showStatus('data-status', 'All data cleared', 'success');
+   
+    try {
+        clearAllData();
+        state.clearAllTasks();
+        state.settings = { weeklyBudget: 300 };
+        updateView();
+        updateDashboard();
+        showStatus('data-status', 'All data cleared', 'success');
+    } catch (error) {
+        console.error('Clear data failed:', error);
+        showStatus('data-status', 'Failed to clear data. Please try again.', 'error');
+    }
 }
 
-// Setup delete modal
-function setupDeleteModal() {
+// Setup delete dialog
+function setupDeleteDialog() {
     const confirmBtn = document.getElementById('confirm-delete');
     const cancelBtn = document.getElementById('cancel-delete');
     
@@ -282,19 +311,38 @@ function setupDeleteModal() {
             state.deleteTask(state.deleteTaskId);
             updateView();
             updateDashboard();
-            hideDeleteModal();
+            hideDeleteDialog();
         }
     });
     
-    cancelBtn.addEventListener('click', hideDeleteModal);
+    cancelBtn.addEventListener('click', hideDeleteDialog);
     
-    // Close modal on escape key
+    // Close dialog on escape key
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
-            const modal = document.getElementById('delete-modal');
-            if (!modal.hidden) {
-                hideDeleteModal();
+            const dialog = document.getElementById('delete-dialog');
+            if (dialog && !dialog.hidden) {
+                hideDeleteDialog();
             }
+        }
+    });
+}
+
+// Setup keyboard shortcuts 
+function setupKeyboardShortcuts() {
+    document.addEventListener('keydown', (e) => {
+        // Ctrl/Cmd + N - New task
+        if ((e.ctrlKey || e.metaKey) && e.key === 'n') {
+            e.preventDefault();
+            switchSection('add-task');
+            document.getElementById('task-title').focus();
+        }
+        
+        // Ctrl/Cmd + S - Save (when in form)
+        if ((e.ctrlKey || e.metaKey) && e.key === 's' && state.currentSection === 'add-task') {
+            e.preventDefault();
+            const form = document.getElementById('task-form');
+            form.dispatchEvent(new Event('submit'));
         }
     });
 }
@@ -321,3 +369,13 @@ if (document.readyState === 'loading') {
 } else {
     init();
 }
+
+// Handle delete confirmation from dialog.js
+document.addEventListener('delete:confirm', (e) => {
+    const taskId = e.detail && e.detail.id;
+    if (!taskId) return;
+    
+    state.deleteTask(taskId);
+    updateView();
+    updateDashboard();
+});
