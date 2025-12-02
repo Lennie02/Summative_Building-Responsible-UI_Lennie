@@ -268,7 +268,7 @@ This project was created as part of the ALU Summative Assignment - Building Resp
 
 ## 🎥 Demo Video
 
-[Watch Demo Video (2-3 min)](https://your-video-link-here.com) - Shows keyboard navigation, regex search, import/export, and responsive design.
+[Demo Video](https://youtu.be/OTJb0j_70Iw) 
 
 ---
 
