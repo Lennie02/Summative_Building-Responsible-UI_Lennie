@@ -5,82 +5,151 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Campus Life Planner - Tests</title>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            max-width: 900px;
+            max-width: 1000px;
             margin: 0 auto;
             padding: 20px;
             background: #f5f5f5;
+            color: #333;
         }
+
         h1 {
             color: #667eea;
+            margin-bottom: 20px;
+            text-align: center;
         }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1rem;
+            margin-bottom: 25px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            font-weight: 500;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        .summary {
+            background: linear-gradient(135deg, #e7f3ff 0%, #d4e7ff 100%);
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            border-left: 4px solid #667eea;
+            display: none;
+        }
+
+        .summary.visible {
+            display: block;
+        }
+
+        .summary h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+
+        .summary p {
+            margin: 8px 0;
+            font-size: 1.05rem;
+        }
+
         .test-section {
             background: white;
-            padding: 20px;
+            padding: 25px;
             margin-bottom: 20px;
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
+
+        .test-section h2 {
+            color: #764ba2;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 10px;
+        }
+
         .test-case {
             margin: 15px 0;
-            padding: 12px;
+            padding: 15px;
             border-left: 4px solid #ddd;
             background: #f9f9f9;
+            border-radius: 4px;
         }
+
         .test-case.pass {
             border-left-color: #28a745;
             background: #d4edda;
         }
+
         .test-case.fail {
             border-left-color: #dc3545;
             background: #f8d7da;
         }
+
         .test-title {
             font-weight: bold;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
+            font-size: 1.05rem;
         }
+
         .test-input {
             color: #666;
-            font-family: monospace;
-            margin: 5px 0;
-        }
-        .test-result {
-            margin-top: 5px;
-            font-size: 0.9em;
-        }
-        button {
-            background: #667eea;
-            color: white;
-            border: none;
-            padding: 10px 20px;
+            font-family: 'Courier New', monospace;
+            margin: 8px 0;
+            padding: 8px;
+            background: rgba(0,0,0,0.05);
             border-radius: 4px;
-            cursor: pointer;
-            font-size: 1rem;
-            margin-bottom: 20px;
         }
-        button:hover {
-            background: #764ba2;
-        }
-        .summary {
-            background: #e7f3ff;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            border-left: 4px solid #667eea;
+
+        .test-result {
+            margin-top: 8px;
+            font-size: 0.9em;
+            color: #555;
         }
     </style>
 </head>
 <body>
+    <a href="index.html" class="back-link">← Back to Campus Life Planner</a>
+    
     <h1>Validation Tests - Campus Life Planner</h1>
     
     <button onclick="runAllTests()">Run All Tests</button>
     
-    <div id="summary" class="summary" style="display:none;">
-        <h3>Test Summary</h3>
-        <p>Total: <span id="total-tests">0</span></p>
-        <p>Passed: <span id="passed-tests">0</span></p>
-        <p>Failed: <span id="failed-tests">0</span></p>
+    <div id="summary" class="summary">
+        <h3>📊 Test Summary</h3>
+        <p><strong>Total:</strong> <span id="total-tests">0</span></p>
+        <p><strong>Passed:</strong> <span id="passed-tests" style="color: #28a745;">0</span></p>
+        <p><strong>Failed:</strong> <span id="failed-tests" style="color: #dc3545;">0</span></p>
     </div>
     
     <div id="test-results"></div>
@@ -91,7 +160,9 @@
 
         window.runAllTests = function() {
             const results = document.getElementById('test-results');
+            const summary = document.getElementById('summary');
             results.innerHTML = '';
+            summary.classList.add('visible');
             
             let totalTests = 0;
             let passedTests = 0;
@@ -99,7 +170,7 @@
             // Title validation tests
             const titleSection = document.createElement('div');
             titleSection.className = 'test-section';
-            titleSection.innerHTML = '<h2>Title Validation Tests</h2>';
+            titleSection.innerHTML = '<h2>📝 Title Validation Tests</h2>';
             
             const titleTests = [
                 { input: 'Complete Assignment', expected: true, desc: 'Valid title' },
@@ -131,7 +202,7 @@
             // Date validation tests
             const dateSection = document.createElement('div');
             dateSection.className = 'test-section';
-            dateSection.innerHTML = '<h2>Date Validation Tests</h2>';
+            dateSection.innerHTML = '<h2>📅 Date Validation Tests</h2>';
             
             const dateTests = [
                 { input: '2025-10-20', expected: true, desc: 'Valid date' },
@@ -163,7 +234,7 @@
             // Duration validation tests
             const durationSection = document.createElement('div');
             durationSection.className = 'test-section';
-            durationSection.innerHTML = '<h2>Duration Validation Tests</h2>';
+            durationSection.innerHTML = '<h2>⏱️ Duration Validation Tests</h2>';
             
             const durationTests = [
                 { input: '60', expected: true, desc: 'Valid integer' },
@@ -195,7 +266,7 @@
             // Tag validation tests
             const tagSection = document.createElement('div');
             tagSection.className = 'test-section';
-            tagSection.innerHTML = '<h2>Tag Validation Tests</h2>';
+            tagSection.innerHTML = '<h2>🏷️ Tag Validation Tests</h2>';
             
             const tagTests = [
                 { input: 'Assignment', expected: true, desc: 'Valid single word' },
@@ -228,7 +299,7 @@
             // Regex compilation tests
             const regexSection = document.createElement('div');
             regexSection.className = 'test-section';
-            regexSection.innerHTML = '<h2>Regex Search Tests</h2>';
+            regexSection.innerHTML = '<h2>🔍 Regex Search Tests</h2>';
             
             const regexTests = [
                 { input: 'assignment', expected: true, desc: 'Valid simple pattern' },
@@ -257,14 +328,13 @@
             
             results.appendChild(regexSection);
 
-            // Show summary
+            // Update summary
             document.getElementById('total-tests').textContent = totalTests;
             document.getElementById('passed-tests').textContent = passedTests;
             document.getElementById('failed-tests').textContent = totalTests - passedTests;
-            document.getElementById('summary').style.display = 'block';
             
             // Scroll to top
-            window.scrollTo(0, 0);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         };
     </script>
 </body>

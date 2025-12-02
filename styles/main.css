@@ -702,69 +702,256 @@ main {
 }
 
 /* Settings */
-.settings-group {
+.settings-header {
     margin-bottom: 30px;
     padding-bottom: 20px;
-    border-bottom: 1px solid #ddd;
+    border-bottom: 2px solid #f0f0f0;
 }
 
-.settings-group:last-child {
-    border-bottom: none;
+.settings-header h2 {
+    font-size: 2rem;
+    margin-bottom: 8px;
+    color: #667eea;
 }
 
-.settings-group h3 {
+.settings-header p {
+    color: #666;
+    font-size: 0.95rem;
+}
+
+.settings-section {
+    background: #f9f9f9;
+    border-radius: 10px;
+    padding: 30px;
+    margin-bottom: 25px;
+    border-left: 4px solid #667eea;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.settings-section:hover {
+    transform: translateX(5px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+}
+
+.settings-section h3 {
     color: #764ba2;
-    margin-bottom: 15px;
-}
-
-.conversion-tool {
+    font-size: 1.3rem;
+    margin-bottom: 20px;
     display: flex;
-    flex-wrap: wrap;
     align-items: center;
     gap: 10px;
-    margin-top: 10px;
+}
+
+.section-icon {
+    font-size: 1.5rem;
+}
+
+.settings-section p {
+    color: #555;
+    margin-bottom: 15px;
+    line-height: 1.5;
+}
+
+/* Time Convertor */
+.conversion-tool {
+    display: grid;
+    grid-template-columns: auto 1fr auto auto 1fr;
+    gap: 12px;
+    align-items: center;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    margin-top: 15px;
+    border: 1px solid #e0e0e0;
+}
+
+.conversion-tool label {
+    color: hwb(0 29% 70%);
+    font-weight: 500;
 }
 
 .conversion-tool input,
 .conversion-tool select {
-    padding: 8px;
+    padding: 12px 16px;
     border: 1px solid #ddd;
-    border-radius: 4px;
+    border-radius: 6px;
+    font-size: 1rem;
+    background: white;
+    color: #333;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.conversion-tool input:focus,
+.conversion-tool select:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.equals-sign {
+    color: #667eea;
+    font-size: 1.2rem;
+    font-weight: bold;
 }
 
 .convert-result {
     font-weight: bold;
     color: #667eea;
+    font-size: 1.1rem;
 }
 
-.data-actions {
+/* Budget Controls */
+.budget-controls {
     display: flex;
+    gap: 15px;
+    align-items: flex-end;
     flex-wrap: wrap;
-    gap: 10px;
     margin-top: 15px;
 }
 
-.import-group {
-    position: relative;
+.budget-input-group {
+    flex: 1;
+    min-width: 250px;
 }
 
-#data-status,
-#cap-save-status {
-    margin-top: 10px;
-    padding: 10px;
-    border-radius: 4px;
+.budget-input-group label {
+    display: block;
+    color: #333;
+    font-weight: 500;
+    margin-bottom: 8px;
 }
 
-#data-status.success,
-#cap-save-status.success {
+.budget-input-group input {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 1rem;
+    background: white;
+    color: #333;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.budget-input-group input:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+/* Button Enhancements */
+.settings-section .btn {
+    padding: 12px 28px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 500;
+    transition: all 0.3s;
+}
+
+.settings-section .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+.settings-section .btn-secondary:hover {
+    background: #5a6268;
+    transform: translateY(-2px);
+}
+
+.settings-section .btn-danger:hover {
+    background: #bd2130;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(220, 53, 69, 0.4);
+}
+
+/* Data Actions */
+.data-actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 15px;
+}
+
+/* Status Messages */
+#cap-save-status,
+#data-status {
+    margin-top: 15px;
+    padding: 12px 16px;
+    border-radius: 6px;
+    font-size: 0.95rem;
+}
+
+#cap-save-status.success,
+#data-status.success {
     background: #d4edda;
     color: #155724;
+    border: 1px solid #c3e6cb;
 }
 
-#data-status.error,
-#cap-save-status.error {
+#cap-save-status.error,
+#data-status.error {
     background: #f8d7da;
     color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+/* Responsive Settings */
+@media (max-width: 768px) {
+    .settings-header h2 {
+        font-size: 1.75rem;
+    }
+
+    .conversion-tool {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    .equals-sign {
+        display: none;
+    }
+
+    .convert-result {
+        text-align: center;
+        padding: 12px;
+        background: #f5f5f5;
+        border-radius: 6px;
+        border: 1px solid #e0e0e0;
+    }
+
+    .budget-controls {
+        flex-direction: column;
+    }
+
+    .budget-input-group {
+        width: 100%;
+    }
+
+    .settings-section {
+        padding: 20px;
+    }
+
+    .data-actions {
+        flex-direction: column;
+    }
+
+    .settings-section .btn {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .settings-section h3 {
+        font-size: 1.1rem;
+    }
+
+    .section-icon {
+        font-size: 1.3rem;
+    }
+
+    .settings-section p {
+        font-size: 0.9rem;
+    }
 }
 
 /* Dialog */
@@ -775,14 +962,14 @@ main {
     width: 100%;
     height: 100%;
     background: rgba(0,0,0,0.5);
-    display: none; /* Hidden by default */
+    display: none; 
     align-items: center;
     justify-content: center;
     z-index: 100;
 }
 
 .dialog.active {
-    display: flex; /* Show as flex when active */
+    display: flex; 
 }
 
 .dialog-content {
@@ -807,7 +994,7 @@ main {
 }
 
 .dialog {
-  display: none; /* Not display: block */
+  display: none; 
 }
 
 .dialog.active {

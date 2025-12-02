@@ -240,48 +240,85 @@
                 </form>
             </section>
 
-            <!-- Settings Section -->
-            <section id="settings" class="content-section" hidden>
-                <h2>Settings</h2>
+           <!-- Settings Section -->
+<section id="settings" class="content-section" hidden>
+    <div class="settings-header">
+        <h2>Settings</h2>
+        <p>Customize your Campus Life Planner experience</p>
+    </div>
 
-                <div class="settings-group">
-                    <h3>Time Units</h3>
-                    <p>Current unit: <strong>Minutes</strong></p>
-                    <div class="conversion-tool">
-                        <label for="convert-input">Convert:</label>
-                        <input type="number" id="convert-input" value="60" min="0">
-                        <select id="convert-from">
-                            <option value="minutes">Minutes</option>
-                            <option value="hours">Hours</option>
-                        </select>
-                        <span>=</span>
-                        <span id="convert-output" class="convert-result">1 hour(s)</span>
-                    </div>
-                </div>
-
-                <div class="settings-group">
-                    <h3>Weekly Time Budget</h3>
-                    <label for="cap-input">Set budget (minutes):</label>
-                    <input type="number" id="cap-input" value="300" min="1">
-                    <button id="save-cap" class="btn btn-primary">Save Budget</button>
-                    <div role="status" aria-live="polite" id="cap-save-status"></div>
-                </div>
-
-                <div class="settings-group">
-                    <h3>Data Management</h3>
-                    <div class="data-actions">
-                        <button id="export-data" class="btn btn-secondary">Export JSON</button>
-                        <div class="import-group">
-                            <label for="import-file" class="btn btn-secondary">Import JSON</label>
-                            <input type="file" id="import-file" accept=".json" hidden>
-                        </div>
-                        <button id="clear-data" class="btn btn-danger">Clear All Data</button>
-                    </div>
-                    <div role="status" aria-live="assertive" id="data-status"></div>
-                </div>
-            </section>
+   
+    <div class="settings-section">
+        <h3>
+            <span class="section-icon">⏱️</span>
+            Time Units
+        </h3>
+        <p>Current unit: <strong>Minutes</strong></p>
+        
+        <div class="conversion-tool">
+            <label for="convert-input">Convert:</label>
+            <input type="number" id="convert-input" value="60" min="0">
+            
+            <select id="convert-from">
+                <option value="minutes">Minutes</option>
+                <option value="hours">Hours</option>
+            </select>
+            
+            <span class="equals-sign">=</span>
+            
+            <span class="convert-result" id="convert-output">1 hour(s)</span>
         </div>
-    </main>
+    </div>
+
+    <!-- Weekly Budget Section -->
+    <div class="settings-section">
+        <h3>
+            <span class="section-icon">📊</span>
+            Weekly Time Budget
+        </h3>
+        <p>Set a weekly time limit to help manage your workload and prevent overcommitment.</p>
+        
+        <div class="budget-controls">
+            <div class="budget-input-group">
+                <label for="cap-input">Budget (minutes):</label>
+                <input type="number" id="cap-input" value="300" min="1">
+            </div>
+            <button id="save-cap" class="btn btn-primary">
+                💾 Save Budget
+            </button>
+        </div>
+        
+        <div role="status" aria-live="polite" id="cap-save-status"></div>
+    </div>
+
+    <!-- Data Management Section -->
+    <div class="settings-section">
+        <h3>
+            <span class="section-icon">💾</span>
+            Data Management
+        </h3>
+        <p>Export your tasks for backup or import previously saved data.</p>
+        
+        <div class="data-actions">
+            <button id="export-data" class="btn btn-secondary">
+                📤 Export JSON
+            </button>
+            
+            <div class="import-group">
+                <label for="import-file" class="btn btn-secondary">
+                    📥 Import JSON
+                </label>
+                <input type="file" id="import-file" accept=".json" hidden>
+            </div>
+            
+            <button id="clear-data" class="btn btn-danger">
+                🗑️ Clear All Data
+            </button>
+        </div>
+        
+        <div role="status" aria-live="assertive" id="data-status"></div>
+    </div>
+</section>
 
     <footer>
         <div class="container">
